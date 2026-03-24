@@ -12,5 +12,6 @@
   - Google AdSense 광고 및 소유권 확인 연동.
 
 ## 현재 작업 (2026-03-24)
-### Google Analytics (gtag.js) 추가
-- **Index.html:** 모든 HTML 파일(현재 `index.html`)의 `<head>` 영역에 Google 태그(`gtag.js`)를 추가하여 방문자 트래픽 분석 기능을 통합.
+### 분석 도구 추가 (Google Analytics & MS Clarity)
+- **Google Analytics:** `index.html`의 `<head>` 영역에 Google 태그(`gtag.js`)를 추가하여 방문자 트래픽 분석 기능을 통합.
+- **MS Clarity:** 사용자 행동 분석(히트맵, 세션 녹화 등)을 위해 Microsoft Clarity 추적 코드를 `<head>` 영역에 추가.
