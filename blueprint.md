@@ -11,7 +11,6 @@
   - 클릭 시 콘솔에 로그를 남기는 버튼 기능.
   - Google AdSense 광고 및 소유권 확인 연동.
 
-## 현재 작업 (2026-03-02)
-### Google AdSense 추가
-- **Ads.txt:** 루트 디렉토리에 `ads.txt` 생성 및 게시자 ID 정보 추가.
-- **Index.html:** `<head>` 영역에 AdSense 계정 소유권 확인용 `<meta>` 태그 및 자동 광고 스크립트 추가.
+## 현재 작업 (2026-03-24)
+### Google Analytics (gtag.js) 추가
+- **Index.html:** 모든 HTML 파일(현재 `index.html`)의 `<head>` 영역에 Google 태그(`gtag.js`)를 추가하여 방문자 트래픽 분석 기능을 통합.
