@@ -1,4 +1,24 @@
 /**
+ * Theme Management
+ */
+function initTheme() {
+    const themeCheckbox = document.getElementById('theme-checkbox');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (themeCheckbox) {
+        themeCheckbox.checked = savedTheme === 'light';
+        themeCheckbox.addEventListener('change', (e) => {
+            const newTheme = e.target.checked ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initTheme);
+
+/**
  * IngredientItem Component
  * Manages individual ingredient input row
  */
@@ -78,7 +98,9 @@ class CraftingApp extends HTMLElement {
         this._addBtn = shadow.querySelector('.add-btn');
         this._targetNameInput = shadow.querySelector('.target-name');
         this._targetPriceInput = shadow.querySelector('.target-price');
-        this._saveBtn = shadow.querySelector('.save-recipe-btn');
+        
+        // Save button is now in global DOM
+        this._saveBtn = document.querySelector('.save-recipe-btn');
         
         // Summary elements
         this._totalCostEl = shadow.querySelector('.total-cost');
@@ -242,7 +264,7 @@ class CraftingApp extends HTMLElement {
 
             // 삭제 클릭 이벤트
             div.querySelector('.delete-history-btn').addEventListener('click', (e) => {
-                e.stopPropagation(); // 부모 클릭 이벤트 방지
+                e.stopPropagation();
                 if (confirm(`'${item.targetName}' 레시피를 삭제하시겠습니까?`)) {
                     const newHistory = history.filter((_, i) => i !== index);
                     localStorage.setItem('crafting-calc-history', JSON.stringify(newHistory));

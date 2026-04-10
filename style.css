@@ -2,7 +2,7 @@
     --primary-color: oklch(0.65 0.25 260);
     --secondary-color: oklch(0.7 0.15 190);
     --success-color: oklch(0.75 0.18 150);
-    --danger-color: oklch(0.6 0.2 25);
+    --danger-color: oklch(0.6 0.25 20);
     --bg-color: oklch(0.15 0.02 250);
     --card-bg: oklch(0.2 0.03 250 / 0.7);
     --text-color: oklch(0.95 0.01 250);
@@ -10,11 +10,20 @@
     --shadow-deep: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 5px 15px -5px rgba(0, 0, 0, 0.3);
 }
 
+:root[data-theme="light"] {
+    --bg-color: oklch(0.98 0.01 250);
+    --card-bg: oklch(1 0 0 / 0.8);
+    --text-color: oklch(0.2 0.02 250);
+    --glow-color: oklch(0.65 0.25 260 / 0.15);
+    --shadow-deep: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 body {
@@ -26,6 +35,73 @@ body {
     align-items: center;
     overflow-x: hidden;
 }
+
+/* Theme Toggle Slider */
+.theme-toggle-wrapper {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 100;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: oklch(0.3 0.02 250);
+    transition: .4s;
+    border-radius: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+input:checked + .slider {
+    background-color: oklch(0.8 0.1 200);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.icon {
+    font-size: 14px;
+    user-select: none;
+    z-index: 1;
+}
+
+.sun { opacity: 0; transition: 0.3s; }
+.moon { opacity: 1; transition: 0.3s; }
+
+input:checked + .slider .sun { opacity: 1; }
+input:checked + .slider .moon { opacity: 0; }
 
 .noise-bg {
     position: fixed;
@@ -71,49 +147,35 @@ crafting-app {
     overflow-y: auto;
 }
 
-.sidebar h3 {
-    margin-bottom: 1.5rem;
-    font-size: 1.2rem;
-}
-
-.history-item {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 1rem;
-    margin-bottom: 1rem;
+.sidebar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    gap: 10px;
 }
 
-.history-item-content {
-    flex: 1;
-    cursor: pointer;
-}
-
-.history-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(5px);
-    border-color: var(--primary-color);
+.sidebar h3 {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    white-space: nowrap;
 }
 
 .delete-history-btn {
     background: none;
     border: none;
-    color: var(--danger-color);
+    color: oklch(0.6 0.25 20); /* Pure Red */
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0 0.5rem;
     transition: all 0.2s;
-    filter: saturate(1.5);
-    opacity: 0.8;
+    opacity: 0.7;
 }
 
 .delete-history-btn:hover {
     opacity: 1;
     transform: scale(1.2);
+    filter: drop-shadow(0 0 5px oklch(0.6 0.25 20 / 0.4));
 }
 
 .history-item-name {
