@@ -166,6 +166,30 @@ crafting-app {
     white-space: nowrap;
 }
 
+.history-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.history-item-content {
+    flex: 1;
+    cursor: pointer;
+    min-width: 0; /* Prevents text overflow from pushing the button */
+}
+
+.history-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+    border-color: var(--primary-color);
+}
+
 .delete-history-btn {
     background: var(--danger-color);
     border: none;
@@ -194,6 +218,9 @@ crafting-app {
     font-weight: bold;
     display: block;
     margin-bottom: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .history-item-meta {
