@@ -82,14 +82,36 @@ crafting-app {
     border-radius: 12px;
     padding: 1rem;
     margin-bottom: 1rem;
-    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     transition: all 0.3s ease;
+}
+
+.history-item-content {
+    flex: 1;
+    cursor: pointer;
 }
 
 .history-item:hover {
     background: rgba(255, 255, 255, 0.1);
     transform: translateX(5px);
     border-color: var(--primary-color);
+}
+
+.delete-history-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    transition: all 0.2s;
+}
+
+.delete-history-btn:hover {
+    color: var(--danger-color);
+    transform: scale(1.2);
 }
 
 .history-item-name {

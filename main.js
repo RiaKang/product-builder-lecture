@@ -222,18 +222,34 @@ class CraftingApp extends HTMLElement {
             div.className = 'history-item';
             const date = new Date(item.timestamp).toLocaleDateString();
             div.innerHTML = `
-                <span class="history-item-name">${item.targetName}</span>
-                <div class="history-item-meta">
-                    <span>비용: ${parseFloat(item.targetPrice).toLocaleString()}</span>
-                    <span>${date}</span>
+                <div class="history-item-content">
+                    <span class="history-item-name">${item.targetName}</span>
+                    <div class="history-item-meta">
+                        <span>비용: ${parseFloat(item.targetPrice).toLocaleString()}</span>
+                        <span>${date}</span>
+                    </div>
                 </div>
+                <button class="delete-history-btn" title="삭제">×</button>
             `;
-            div.addEventListener('click', () => {
+
+            // 불러오기 클릭 이벤트
+            div.querySelector('.history-item-content').addEventListener('click', () => {
                 if (confirm(`'${item.targetName}' 레시피를 불러올까요?`)) {
                     this.loadRecipe(item);
                     this._saveCurrentState();
                 }
             });
+
+            // 삭제 클릭 이벤트
+            div.querySelector('.delete-history-btn').addEventListener('click', (e) => {
+                e.stopPropagation(); // 부모 클릭 이벤트 방지
+                if (confirm(`'${item.targetName}' 레시피를 삭제하시겠습니까?`)) {
+                    const newHistory = history.filter((_, i) => i !== index);
+                    localStorage.setItem('crafting-calc-history', JSON.stringify(newHistory));
+                    this._renderHistory();
+                }
+            });
+
             historyList.appendChild(div);
         });
     }
