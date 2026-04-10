@@ -53,9 +53,9 @@ class IngredientItem extends HTMLElement {
     set data(val) {
         if (!this._nameInput) return;
         this._nameInput.value = val.name || '';
-        this._priceInput.value = val.price || 0;
-        this._qtyInput.value = val.qty || 1;
-        this._timeInput.value = val.time || 0;
+        this._priceInput.value = val.price || '';
+        this._qtyInput.value = val.qty || '';
+        this._timeInput.value = val.time || '';
     }
 }
 
@@ -133,16 +133,14 @@ class CraftingApp extends HTMLElement {
         const profitMargin = totalCost > 0 ? (netProfit / totalCost) * 100 : 0;
 
         // Update UI
-        if (this._totalCostEl) this._totalCostEl.textContent = totalCost.toLocaleString() + ' Gold';
+        if (this._totalCostEl) this._totalCostEl.textContent = totalCost.toLocaleString();
         
         if (this._totalTimeEl) {
-            const h = Math.floor(totalTime / 60);
-            const m = totalTime % 60;
-            this._totalTimeEl.textContent = `${h > 0 ? h + '시간 ' : ''}${m}분`;
+            this._totalTimeEl.textContent = totalTime.toLocaleString();
         }
 
         if (this._netProfitEl) {
-            this._netProfitEl.textContent = netProfit.toLocaleString() + ' Gold';
+            this._netProfitEl.textContent = netProfit.toLocaleString();
             this._netProfitEl.className = `value net-profit ${netProfit >= 0 ? 'profit-positive' : 'profit-negative'}`;
         }
 

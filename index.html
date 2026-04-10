@@ -37,7 +37,7 @@
     </svg>
     <main>
         <header>
-            <h1>🛠️ 제작 가성비 계산기</h1>
+            <h1>🛠️ 가성비 계산기</h1>
             <p>재료비와 시간을 입력하여 최적의 수익을 계산하세요.</p>
         </header>
 
@@ -109,8 +109,8 @@
         <div class="item-row">
             <div class="name-col"><input type="text" placeholder="재료명" class="name-input"></div>
             <div><input type="number" placeholder="가격" class="price-input" min="0"></div>
-            <div><input type="number" placeholder="수량" class="qty-input" min="1" value="1"></div>
-            <div><input type="number" placeholder="시간(분)" class="time-input" min="0" value="0"></div>
+            <div><input type="number" placeholder="수량" class="qty-input" min="1"></div>
+            <div><input type="number" placeholder="시간(분)" class="time-input" min="0"></div>
             <div class="remove-col"><button class="remove-btn">×</button></div>
         </div>
     </template>
@@ -212,7 +212,7 @@
 
             <div class="ingredients-section">
                 <div class="ingredients-header">
-                    <h3>📦 필요 재료 (B, C, D...)</h3>
+                    <h3>📦 필요 재료</h3>
                     <button class="add-btn">+ 재료 추가</button>
                 </div>
                 <div id="ingredients-list">
@@ -229,7 +229,7 @@
                     </div>
                     <div class="result-item">
                         <span class="label">총 소요 시간</span>
-                        <span class="value total-time">0분</span>
+                        <span class="value total-time">0</span>
                     </div>
                     <div class="result-item">
                         <span class="label">예상 순수익</span>
