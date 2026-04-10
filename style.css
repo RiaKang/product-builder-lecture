@@ -116,6 +116,11 @@ input:checked + .slider .moon { opacity: 0; }
     filter: url(#noiseFilter);
 }
 
+::placeholder {
+    color: var(--text-color);
+    opacity: 0.5;
+}
+
 main {
     width: 95%;
     max-width: 1200px;
@@ -162,20 +167,24 @@ crafting-app {
 }
 
 .delete-history-btn {
-    background: none;
+    background: var(--danger-color);
     border: none;
-    color: oklch(0.6 0.25 20); /* Pure Red */
-    font-size: 1.2rem;
+    color: white;
+    font-size: 1rem;
     cursor: pointer;
-    padding: 0 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
     transition: all 0.2s;
-    opacity: 0.7;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .delete-history-btn:hover {
     opacity: 1;
-    transform: scale(1.2);
-    filter: drop-shadow(0 0 5px oklch(0.6 0.25 20 / 0.4));
+    transform: scale(1.1);
+    filter: brightness(1.1);
 }
 
 .history-item-name {
