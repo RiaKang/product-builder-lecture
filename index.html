@@ -35,13 +35,24 @@
             <feColorMatrix type="saturate" values="0" />
         </filter>
     </svg>
-    <main>
+    <main class="layout-container">
         <header>
             <h1>🛠️ 가성비 계산기</h1>
             <p>재료비와 시간을 입력하여 최적의 수익을 계산하세요.</p>
         </header>
 
-        <crafting-app id="app"></crafting-app>
+        <div class="content-wrapper">
+            <crafting-app id="app"></crafting-app>
+            <aside id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <h3>📁 저장된 레시피</h3>
+                </div>
+                <div id="history-list" class="history-list">
+                    <!-- History items will be injected here -->
+                    <p class="empty-msg">저장된 데이터가 없습니다.</p>
+                </div>
+            </aside>
+        </div>
     </main>
 
     <!-- Templates for Web Components -->
@@ -221,7 +232,10 @@
             </div>
 
             <div class="summary">
-                <h3>📊 계산 결과</h3>
+                <div class="summary-header">
+                    <h3>📊 계산 결과</h3>
+                    <button class="save-recipe-btn">💾 현재 레시피 저장</button>
+                </div>
                 <div class="result-grid">
                     <div class="result-item">
                         <span class="label">총 제작 비용</span>

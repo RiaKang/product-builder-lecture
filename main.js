@@ -78,6 +78,7 @@ class CraftingApp extends HTMLElement {
         this._addBtn = shadow.querySelector('.add-btn');
         this._targetNameInput = shadow.querySelector('.target-name');
         this._targetPriceInput = shadow.querySelector('.target-price');
+        this._saveBtn = shadow.querySelector('.save-recipe-btn');
         
         // Summary elements
         this._totalCostEl = shadow.querySelector('.total-cost');
@@ -86,7 +87,8 @@ class CraftingApp extends HTMLElement {
         this._profitMarginEl = shadow.querySelector('.profit-margin');
 
         this._setupListeners();
-        this._loadData();
+        this._loadCurrentState();
+        this._renderHistory();
     }
 
     _setupListeners() {
@@ -97,16 +99,20 @@ class CraftingApp extends HTMLElement {
             });
         }
 
+        if (this._saveBtn) {
+            this._saveBtn.addEventListener('click', () => this._saveToHistory());
+        }
+
         this.addEventListener('ingredient-updated', () => {
             this._updateCalculations();
-            this._saveData();
+            this._saveCurrentState();
         });
 
         [this._targetNameInput, this._targetPriceInput].forEach(input => {
             if (input) {
                 input.addEventListener('input', () => {
                     this._updateCalculations();
-                    this._saveData();
+                    this._saveCurrentState();
                 });
             }
         });
@@ -134,10 +140,7 @@ class CraftingApp extends HTMLElement {
 
         // Update UI
         if (this._totalCostEl) this._totalCostEl.textContent = totalCost.toLocaleString();
-        
-        if (this._totalTimeEl) {
-            this._totalTimeEl.textContent = totalTime.toLocaleString();
-        }
+        if (this._totalTimeEl) this._totalTimeEl.textContent = totalTime.toLocaleString();
 
         if (this._netProfitEl) {
             this._netProfitEl.textContent = netProfit.toLocaleString();
@@ -150,38 +153,89 @@ class CraftingApp extends HTMLElement {
         }
     }
 
-    _saveData() {
-        if (!this._listContainer) return;
+    _getState() {
         const ingredients = Array.from(this._listContainer.querySelectorAll('ingredient-item'));
-        const state = {
+        return {
             targetName: this._targetNameInput?.value || '',
             targetPrice: this._targetPriceInput?.value || '',
-            ingredients: ingredients.map(item => item.data)
+            ingredients: ingredients.map(item => item.data),
+            timestamp: new Date().toISOString()
         };
-        localStorage.setItem('crafting-calc-state', JSON.stringify(state));
     }
 
-    _loadData() {
-        const saved = localStorage.getItem('crafting-calc-state');
+    _saveCurrentState() {
+        localStorage.setItem('crafting-calc-current', JSON.stringify(this._getState()));
+    }
+
+    _loadCurrentState() {
+        const saved = localStorage.getItem('crafting-calc-current');
         if (saved) {
-            try {
-                const state = JSON.parse(saved);
-                if (this._targetNameInput) this._targetNameInput.value = state.targetName || '';
-                if (this._targetPriceInput) this._targetPriceInput.value = state.targetPrice || '';
-                
-                if (state.ingredients && state.ingredients.length > 0) {
-                    state.ingredients.forEach(data => this._addIngredient(data));
-                } else {
-                    this._addIngredient();
-                }
-            } catch (e) {
-                console.error("Failed to load saved state", e);
-                this._addIngredient();
-            }
+            this.loadRecipe(JSON.parse(saved));
+        } else {
+            this._addIngredient();
+            this._updateCalculations();
+        }
+    }
+
+    loadRecipe(state) {
+        if (!this._listContainer) return;
+        this._listContainer.innerHTML = '';
+        if (this._targetNameInput) this._targetNameInput.value = state.targetName || '';
+        if (this._targetPriceInput) this._targetPriceInput.value = state.targetPrice || '';
+        
+        if (state.ingredients && state.ingredients.length > 0) {
+            state.ingredients.forEach(data => this._addIngredient(data));
         } else {
             this._addIngredient();
         }
         this._updateCalculations();
+    }
+
+    _saveToHistory() {
+        const state = this._getState();
+        if (!state.targetName) {
+            alert('물품명을 입력해주세요.');
+            return;
+        }
+        
+        const history = JSON.parse(localStorage.getItem('crafting-calc-history') || '[]');
+        history.unshift(state);
+        localStorage.setItem('crafting-calc-history', JSON.stringify(history.slice(0, 50))); // 최대 50개 유지
+        this._renderHistory();
+        alert('레시피가 저장되었습니다.');
+    }
+
+    _renderHistory() {
+        const historyList = document.getElementById('history-list');
+        if (!historyList) return;
+
+        const history = JSON.parse(localStorage.getItem('crafting-calc-history') || '[]');
+        
+        if (history.length === 0) {
+            historyList.innerHTML = '<p class="empty-msg">저장된 데이터가 없습니다.</p>';
+            return;
+        }
+
+        historyList.innerHTML = '';
+        history.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'history-item';
+            const date = new Date(item.timestamp).toLocaleDateString();
+            div.innerHTML = `
+                <span class="history-item-name">${item.targetName}</span>
+                <div class="history-item-meta">
+                    <span>비용: ${parseFloat(item.targetPrice).toLocaleString()}</span>
+                    <span>${date}</span>
+                </div>
+            `;
+            div.addEventListener('click', () => {
+                if (confirm(`'${item.targetName}' 레시피를 불러올까요?`)) {
+                    this.loadRecipe(item);
+                    this._saveCurrentState();
+                }
+            });
+            historyList.appendChild(div);
+        });
     }
 }
 
