@@ -102,15 +102,17 @@ crafting-app {
 .delete-history-btn {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--danger-color);
     font-size: 1.2rem;
     cursor: pointer;
     padding: 0 0.5rem;
     transition: all 0.2s;
+    filter: saturate(1.5);
+    opacity: 0.8;
 }
 
 .delete-history-btn:hover {
-    color: var(--danger-color);
+    opacity: 1;
     transform: scale(1.2);
 }
 

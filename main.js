@@ -229,7 +229,7 @@ class CraftingApp extends HTMLElement {
                         <span>${date}</span>
                     </div>
                 </div>
-                <button class="delete-history-btn" title="삭제">×</button>
+                <button class="delete-history-btn" title="삭제">🗑️</button>
             `;
 
             // 불러오기 클릭 이벤트
